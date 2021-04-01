@@ -1,0 +1,7 @@
+.myBox {
+    width: 20;
+    height: 20;
+    border-width: 1rem;
+    border-color: black;
+    background-color: yellow;
+}

@@ -1,0 +1,113 @@
+<html>
+    <head>
+    <!-- My Stylesheet -->
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="container">
+            <h1 style="text-align: center;">Vic20 Platform Maker - 22x22</h1>
+            <br>
+            <div style="align-content: center;">
+                <svg id="pBox" style="height: 500; width: 1250;">
+                </svg>
+                <p id="label"></p>
+                <p id="output"></p>
+            </div>
+        </div>
+
+        <script src="https://d3js.org/d3.v4.min.js"></script>
+        <script src="https://d3js.org/topojson.v2.min.js"></script>
+        
+        <!-- Platform Maker js -->
+        <script>
+            var base = d3.select("#pBox");
+            var out = d3.select("#output");
+            var label = d3.select("#label");
+
+            let pArray = [];
+            
+            let x = 0;
+            for(i = 0; i < 22; i++)
+            {
+                x+=30;
+                let y = 0;
+                for(j = 0; j < 11; j++)
+                {
+                    y+=30;
+                    base
+                        .append('rect')
+                        .attr('x', x)
+                        .attr('y', y)
+                        .attr('width', 25)
+                        .attr('height', 25)
+                        .attr('stroke', 'black')
+                        .attr('fill', 'white')
+                        .on("click", function(d, i){
+                            //Location of block
+                            var location = 
+                                (((d3.select(this).attr('x'))/30)-1)
+                                +
+                                (((d3.select(this).attr('y'))/30)-1)*22;
+
+                            var elementColor = d3.select(this).style('fill');
+                            //console.log(elementColor);
+                            if(elementColor == "rgb(255, 0, 0)")
+                            {
+                                d3.select(this).attr('fill', 'white');
+                                var index = pArray.indexOf(location);
+                                pArray.splice(index, 1);
+                                var outString = "";
+
+                                for(i = 0; i < pArray.length; i++)
+                                    {
+                                        outString += "#" + pArray[i] + ", ";
+                                    }
+                                outString = outString.substring(0, outString.length - 2);
+                                out.text(outString);
+                            }
+                            else
+                            {
+                                //add to array
+                                d3.select(this)
+                                    .attr('fill', 'red');
+
+                                pArray.push(
+                                    location
+                                );
+                                console.log(pArray);
+
+                                var outString = "";
+
+                                for(i = 0; i < pArray.length; i++)
+                                    {
+                                        outString += "#" + pArray[i] + ", ";
+                                    }
+                                outString = outString.substring(0, outString.length - 2);
+                                out.text(outString);
+                            }
+
+                        });
+                }
+            }
+
+
+        </script>
+
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.js"
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    </body>
+</html>
