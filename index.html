@@ -111,6 +111,8 @@
                 gArray.push(0);
             }
             
+            printHex()
+
             console.log(gArray);
             gOut.text(gArray);
 
@@ -149,7 +151,8 @@
                                 var hexa = dec.toString(16)
                                 gArray[yValue] = hexa
                                 //console.log(hexa)
-                                gOut.text(gArray)
+                                //gOut.text(gArray)
+                                printHex()
                             }
                             else
                             {
@@ -161,11 +164,22 @@
                                 var hexa = dec.toString(16)
                                 gArray[yValue] = hexa
                                 //console.log(hexa)
-                                gOut.text(gArray)
+                                //gOut.text(gArray)
+                                printHex()
                             }
 
                         });
                 }
+            }
+
+            function printHex()
+            {
+                var str = "hex "
+                for(i=0;i<gArray.length-1;i++)
+                {
+                    str += gArray[i] + " "
+                }
+                gOut.text(str)
             }
 
         </script>
