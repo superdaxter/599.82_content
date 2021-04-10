@@ -34,6 +34,19 @@
             var out = d3.select("#output");
             var label = d3.select("#label");
 
+            //check MouseHeldDown Event (After Press)
+            var mouseDown = 0;
+            document.body.onmousedown = function() {
+                ++mouseDown
+                console.log("Mouse down: " + mouseDown)
+            }
+
+            document.body.onmouseup = function() {
+                --mouseDown
+                console.log("Mouse down: " + mouseDown)
+            }
+
+
             let pArray = [];
             
             let x = 0;
@@ -52,7 +65,7 @@
                         .attr('height', 25)
                         .attr('stroke', 'black')
                         .attr('fill', 'white')
-                        .on("click", function(d, i){
+                        .on("mouseover", function(d, i){
                             //Location of block
                             var location = 
                                 (((d3.select(this).attr('x'))/30)-1)
@@ -60,41 +73,48 @@
                                 (((d3.select(this).attr('y'))/30)-1)*22;
 
                             var elementColor = d3.select(this).style('fill');
-                            //console.log(elementColor);
-                            if(elementColor == "rgb(255, 0, 0)")
+
+                            //If Cursor is still held down
+                            if(mouseDown == 1)
                             {
-                                d3.select(this).attr('fill', 'white');
-                                var index = pArray.indexOf(location);
-                                pArray.splice(index, 1);
-                                var outString = "";
+                                //console.log(elementColor);
+                                if(elementColor == "rgb(255, 0, 0)")
+                                {
+                                    d3.select(this).attr('fill', 'white');
+                                    var index = pArray.indexOf(location);
+                                    pArray.splice(index, 1);
+                                    var outString = "";
 
-                                for(i = 0; i < pArray.length; i++)
-                                    {
-                                        outString += "#" + pArray[i] + ", ";
-                                    }
-                                outString = outString.substring(0, outString.length - 2);
-                                out.text(outString);
+                                    for(i = 0; i < pArray.length; i++)
+                                        {
+                                            outString += "#" + pArray[i] + ", ";
+                                        }
+                                    outString = outString.substring(0, outString.length - 2);
+                                    out.text(outString);
+                                }
+                                else
+                                {
+                                    //add to array
+                                    d3.select(this)
+                                        .attr('fill', 'red');
+
+                                    pArray.push(
+                                        location
+                                    );
+                                    console.log(pArray);
+
+                                    var outString = "";
+
+                                    for(i = 0; i < pArray.length; i++)
+                                        {
+                                            outString += "#" + pArray[i] + ", ";
+                                        }
+                                    outString = outString.substring(0, outString.length - 2);
+                                    out.text(outString);
+                                }
                             }
-                            else
-                            {
-                                //add to array
-                                d3.select(this)
-                                    .attr('fill', 'red');
 
-                                pArray.push(
-                                    location
-                                );
-                                console.log(pArray);
 
-                                var outString = "";
-
-                                for(i = 0; i < pArray.length; i++)
-                                    {
-                                        outString += "#" + pArray[i] + ", ";
-                                    }
-                                outString = outString.substring(0, outString.length - 2);
-                                out.text(outString);
-                            }
 
                         });
                 }
@@ -132,7 +152,7 @@
                         .attr('height', 25)
                         .attr('stroke', 'black')
                         .attr('fill', 'white')
-                        .on("click", function(d, i){
+                        .on("mouseover", function(d, i){
 
                             //Location of block
                             var xValue = (((d3.select(this).attr('x'))/30)-1)
@@ -141,31 +161,35 @@
                             console.log(xValue + "," + yValue);
                             
                             var elementColor = d3.select(this).style('fill');
-                            if(elementColor == "rgb(0, 0, 255)")
-                            {
-                                d3.select(this)
-                                    .attr('fill', 'white');
 
-                                var dec = parseInt(gArray[yValue], 16)
-                                dec -= (2 ** (7 - xValue))
-                                var hexa = dec.toString(16)
-                                gArray[yValue] = hexa
-                                //console.log(hexa)
-                                //gOut.text(gArray)
-                                printHex()
-                            }
-                            else
+                            if(mouseDown == 1)
                             {
-                                d3.select(this)
-                                    .attr('fill', 'blue');
+                                if(elementColor == "rgb(0, 0, 255)")
+                                {
+                                    d3.select(this)
+                                        .attr('fill', 'white');
 
-                                var dec = parseInt(gArray[yValue], 16)
-                                dec += (2 ** (7 - xValue))
-                                var hexa = dec.toString(16)
-                                gArray[yValue] = hexa
-                                //console.log(hexa)
-                                //gOut.text(gArray)
-                                printHex()
+                                    var dec = parseInt(gArray[yValue], 16)
+                                    dec -= (2 ** (7 - xValue))
+                                    var hexa = dec.toString(16)
+                                    gArray[yValue] = hexa
+                                    //console.log(hexa)
+                                    //gOut.text(gArray)
+                                    printHex()
+                                }
+                                else
+                                {
+                                    d3.select(this)
+                                        .attr('fill', 'blue');
+
+                                    var dec = parseInt(gArray[yValue], 16)
+                                    dec += (2 ** (7 - xValue))
+                                    var hexa = dec.toString(16)
+                                    gArray[yValue] = hexa
+                                    //console.log(hexa)
+                                    //gOut.text(gArray)
+                                    printHex()
+                                }
                             }
 
                         });
