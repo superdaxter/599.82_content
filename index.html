@@ -9,6 +9,14 @@
             <h2 style="text-align: center;">Vic20 Graphics Maker</h2>
             <br>
             <div style="align-content: center;">
+                <div class="row" style="width: 50%;">
+                    <div class="col"><button type="button" class="btn btn-success"
+                        id="btnGreen" onclick="switchGreen()">Green</button></div>
+                    <div class="col"><button type="button" class="btn btn-warning"
+                        id="btnYellow" onclick="switchYellow()">Yellow</button></div>
+                    <div class="col"><button type="button" class="btn btn-danger"
+                        id="btnRed" onclick="switchRed()">Red</button></div>
+                </div>
                 <svg id="pBox" style="height: 360; width: 700;">
                 </svg>
                 <p id="label"></p>
@@ -33,6 +41,8 @@
             var base = d3.select("#pBox");
             var out = d3.select("#output");
             var label = d3.select("#label");
+
+            var myColor = "rgb(255, 0, 0)";
 
             //check MouseHeldDown Event (After Press)
             var mouseDown = 0;
@@ -78,7 +88,7 @@
                             if(mouseDown == 1)
                             {
                                 //console.log(elementColor);
-                                if(elementColor == "rgb(255, 0, 0)")
+                                if(elementColor == 'rgb(255, 0, 0)' || elementColor == 'rgb(0, 128, 0)' || elementColor == 'rgb(255, 255, 0)')
                                 {
                                     d3.select(this).attr('fill', 'white');
                                     var index = pArray.indexOf(location);
@@ -90,13 +100,16 @@
                                             outString += "#" + pArray[i] + ", ";
                                         }
                                     outString = outString.substring(0, outString.length - 2);
+                                    outString += ("   ; " + pArray.length)
                                     out.text(outString);
                                 }
                                 else
                                 {
                                     //add to array
                                     d3.select(this)
-                                        .attr('fill', 'red');
+                                        .attr('fill', myColor);
+                                    
+                                    console.log(d3.select(this).style('fill'));
 
                                     pArray.push(
                                         location
@@ -110,6 +123,7 @@
                                             outString += "#" + pArray[i] + ", ";
                                         }
                                     outString = outString.substring(0, outString.length - 2);
+                                    outString += ("   ; " + pArray.length)
                                     out.text(outString);
                                 }
                             }
@@ -204,6 +218,22 @@
                     str += gArray[i] + " "
                 }
                 gOut.text(str)
+            }
+
+            function switchGreen()
+            {
+                myColor = "rgb(0, 128, 0)"
+                console.log(myColor)
+            }
+
+            function switchRed()
+            {
+                myColor = "rgb(255, 0, 0)"
+            }
+
+            function switchYellow()
+            {
+                myColor = "rgb(255, 255, 0)"
             }
 
         </script>
